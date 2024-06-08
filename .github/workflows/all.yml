@@ -1,0 +1,26 @@
+name: Build and Deplloy Docker Container
+
+on:
+  push:
+    branches:
+      - master
+env:
+  AWS_REGION: eu-central-1
+  EKS_CLUSTER_NAME: demo
+  
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Set short git commit SHA
+        id: commit
+        uses: prompt/actions-commit-hash@v2
+      
+      - 
+        name: Deploy to EKS
+        env:     
+          IMAGE_TAG: ${{ steps.commit.outputs.short }}
+        run: |
+          sed -i.bak "s|DOCKER_IMAGE_TAG|$IMAGE_TAG|g" k8s/deployment.yaml && \
+          cat k8s/deployment.yaml
