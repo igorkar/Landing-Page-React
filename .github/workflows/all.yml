@@ -16,7 +16,9 @@ jobs:
         name: Set short git commit SHA
         id: commit
         uses: prompt/actions-commit-hash@v2
-      
+      - 
+        name: Check out code
+        uses: actions/checkout@v2
       - 
         name: Deploy to EKS
         env:     
